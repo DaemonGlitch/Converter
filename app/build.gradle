@@ -11,13 +11,46 @@ android {
         versionCode 1
         versionName "1.0"
     }
+	
+	
+	
+
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+
+def keystoreProperties = new Properties()
+
+
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                
+             // Using a signing config in a release build
+             signingConfig signingConfigs.release
         }
     }
 }
+	
+	
+	
+	
+  
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
